@@ -80,7 +80,7 @@ namespace EdFi.Tools.ApiPublisher.Connections.Api.ApiClientManagement
             // Create a separate HttpClient for token refreshes to avoid possible "Snapshot-Identifier" header presence
             _tokenRefreshHttpClient = new HttpClient(httpClientHandler)
             {
-                BaseAddress = new Uri(apiUrl.EnsureSuffixApplied("/"))
+                BaseAddress = new Uri(apiConnectionDetails.AuthUrl?.EnsureSuffixApplied("/") ?? apiUrl.EnsureSuffixApplied("/"))
             };
 
             AddProductInfoToRequestHeader(_tokenRefreshHttpClient);
@@ -130,7 +130,8 @@ namespace EdFi.Tools.ApiPublisher.Connections.Api.ApiClientManagement
             HttpClient httpClient,
             string key,
             string secret,
-            string scope
+            string scope,
+            bool isOdsApiAuth
         )
         {
             if (_logger.IsEnabled(LogEventLevel.Debug))
@@ -140,7 +141,7 @@ namespace EdFi.Tools.ApiPublisher.Connections.Api.ApiClientManagement
                     key[..3]
                 );
 
-            var authRequest = new HttpRequestMessage(HttpMethod.Post, "oauth/token");
+            var authRequest = new HttpRequestMessage(HttpMethod.Post, isOdsApiAuth ? "oauth/token" : "/");
             string encodedKeyAndSecret = Base64Encode($"{key}:{secret}");
 
             string bodyContent =
@@ -254,7 +255,8 @@ namespace EdFi.Tools.ApiPublisher.Connections.Api.ApiClientManagement
                             _tokenRefreshHttpClient,
                             ConnectionDetails.Key,
                             ConnectionDetails.Secret,
-                            ConnectionDetails.Scope
+                            ConnectionDetails.Scope,
+                            ConnectionDetails.IsOdsAuthService
                         )
                         .ConfigureAwait(false)
                         .GetAwaiter()
