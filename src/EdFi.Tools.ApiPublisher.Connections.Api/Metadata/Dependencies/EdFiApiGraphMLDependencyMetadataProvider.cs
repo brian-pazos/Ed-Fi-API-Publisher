@@ -3,6 +3,7 @@
 // The Ed-Fi Alliance licenses this file to you under the Apache License, Version 2.0.
 // See the LICENSE and NOTICES files in the project root for more information.
 
+using System.Net.Http.Headers;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
@@ -42,7 +43,7 @@ public class EdFiApiGraphMLDependencyMetadataProvider : IGraphMLDependencyMetada
         var dependencyRequest = new HttpRequestMessage(HttpMethod.Get, dependenciesRequestUri);
 
 
-        // dependencyRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/graphml"))
+        dependencyRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/graphml"));
 
         var dependencyResponse = await edFiApiClient.HttpClient.SendAsync(dependencyRequest).ConfigureAwait(false);
 
