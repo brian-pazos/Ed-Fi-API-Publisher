@@ -126,6 +126,8 @@ namespace EdFi.Tools.ApiPublisher.Connections.Api.ApiClientManagement
 
         public HttpClient HttpClient => _httpClient;
 
+        public string Name => _name;
+
         private async Task<string> GetBearerTokenAsync(
             HttpClient httpClient,
             string key,
@@ -141,7 +143,7 @@ namespace EdFi.Tools.ApiPublisher.Connections.Api.ApiClientManagement
                     key[..3]
                 );
 
-            var authRequest = new HttpRequestMessage(HttpMethod.Post, isOdsApiAuth ? "oauth/token" : "/");
+            var authRequest = new HttpRequestMessage(HttpMethod.Post, isOdsApiAuth ? "oauth/token" : "");
             string encodedKeyAndSecret = Base64Encode($"{key}:{secret}");
 
             string bodyContent =

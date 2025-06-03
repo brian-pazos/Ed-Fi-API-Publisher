@@ -26,6 +26,9 @@
     <ProjectReference Include="..\EdFi.Tools.ApiPublisher.Core\EdFi.Tools.ApiPublisher.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\v6.1-Dependencies-Json.json" />
+    <EmbeddedResource Include="Resources\v6.1-Version.json" />
+    <EmbeddedResource Include="Resources\v6.1-Dependencies-GraphML.xml" />
     <EmbeddedResource Include="Resources\Dependencies-GraphML-v5.2.xml" />
   </ItemGroup>
 </Project>

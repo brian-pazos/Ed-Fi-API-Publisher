@@ -273,6 +273,34 @@ namespace EdFi.Tools.ApiPublisher.Tests
             return fakeRequestHandler;
         }
 
+        public static IFakeHttpRequestHandler ApiVersionMetadataUrls(
+            this IFakeHttpRequestHandler fakeRequestHandler,
+            string apiVersion,
+            string edfiVersion,
+            Dictionary<string, string> urls
+            )
+        {
+            A.CallTo(() => fakeRequestHandler.Get($"{fakeRequestHandler.BaseUrl}/", A<HttpRequestMessage>.Ignored))
+                .Returns(
+                    FakeResponse.OK(
+                        new
+                        {
+                            version = apiVersion,
+                            dataModels = new[]
+                            {
+                                new
+                                {
+                                    name = "Ed-Fi",
+                                    version = edfiVersion
+                                }
+                            },
+                            urls = JObject.FromObject(urls)
+                        }));
+
+            return fakeRequestHandler;
+        }
+
+
         public static IFakeHttpRequestHandler OAuthToken(this IFakeHttpRequestHandler fakeRequestHandler)
         {
             A.CallTo(() => fakeRequestHandler.Post($"{fakeRequestHandler.BaseUrl}/oauth/token", A<HttpRequestMessage>.Ignored))
